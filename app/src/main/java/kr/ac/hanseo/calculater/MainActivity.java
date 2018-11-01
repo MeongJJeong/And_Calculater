@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Integer[] btnId={R.id.sc_btn1,R.id.sc_btn2,R.id.sc_btn3,R.id.sc_btn4,R.id.sc_btn5,R.id.sc_btn6};
     Integer[] edtId={R.id.name_edt1,R.id.name_edt2,R.id.name_edt3,R.id.name_edt4,R.id.name_edt5,R.id.name_edt6};
@@ -33,31 +35,31 @@ public class MainActivity extends AppCompatActivity {
             nm_edt[i]=(EditText)findViewById(edtId[i]);
             sc_edt[i]=(EditText)findViewById(scedtId[i]);
             cbx[i]=(CheckBox)findViewById(cbxId[i]);
+            sc_btn[i].setOnClickListener(this);
         }
-
-
 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.Ap:
-                setTitle("안녕");
-                return true;
-        }
+    public void onClick(View view) {
 
-        return super.onOptionsItemSelected(item);
-    }
+        final ScoreLetter s=new ScoreLetter();
+        PopupMenu p=new PopupMenu(
+                getApplicationContext(),view);
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        MenuInflater minflater=getMenuInflater();
         for(int i=0;i<btnId.length;i++){
-            if(v == sc_btn[i]){
-                minflater.inflate(R.menu.score_menu,menu);
+            if(view==sc_btn[i]){
+                getMenuInflater().inflate(R.menu.score_menu,p.getMenu());
+                final int finalI = i;
+                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        int id= menuItem.getItemId();
+                        s.divide(id,sc_btn[finalI]);
+                        return false;
+                    }
+                });
+                p.show();
             }
         }
     }
