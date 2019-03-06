@@ -1,65 +1,91 @@
 package kr.ac.hanseo.calculater;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Integer[] btnId={R.id.sc_btn1,R.id.sc_btn2,R.id.sc_btn3,R.id.sc_btn4,R.id.sc_btn5,R.id.sc_btn6};
-    Integer[] edtId={R.id.name_edt1,R.id.name_edt2,R.id.name_edt3,R.id.name_edt4,R.id.name_edt5,R.id.name_edt6};
-    Integer[] scedtId={R.id.score_edt1,R.id.score_edt2,R.id.score_edt3,R.id.score_edt4,R.id.score_edt5,R.id.score_edt6};
-    Integer[] cbxId={R.id.cbx1,R.id.cbx2,R.id.cbx3,R.id.cbx4,R.id.cbx5,R.id.cbx6};
-    Button[] sc_btn=new Button[6];
-    EditText[] nm_edt=new EditText[6];
-    EditText[] sc_edt=new EditText[6];
-    CheckBox[] cbx=new CheckBox[6];
+    private RecyclerView recyclerView;
+    private Button btn_result;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        for(int i=0;i<btnId.length;i++){
-            sc_btn[i]=(Button)findViewById(btnId[i]);
-            registerForContextMenu(sc_btn[i]);
-            nm_edt[i]=(EditText)findViewById(edtId[i]);
-            sc_edt[i]=(EditText)findViewById(scedtId[i]);
-            cbx[i]=(CheckBox)findViewById(cbxId[i]);
-            sc_btn[i].setOnClickListener(this);
-        }
+        recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new mAdapter());
+
+        btn_result=findViewById(R.id.btn_result);
 
     }
 
     @Override
     public void onClick(View view) {
 
-        final ScoreLetter s=new ScoreLetter();
-        PopupMenu p=new PopupMenu(
-                getApplicationContext(),view);
 
-        for(int i=0;i<btnId.length;i++){
-            if(view==sc_btn[i]){
-                getMenuInflater().inflate(R.menu.score_menu,p.getMenu());
-                final int finalI = i;
-                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        int id= menuItem.getItemId();
-                        s.divide(id,sc_btn[finalI]);
-                        return false;
-                    }
-                });
-                p.show();
+    }
+
+
+    class mAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_score,viewGroup,false);
+
+            return new CustomViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            CustomViewHolder customViewHolder=(CustomViewHolder)viewHolder;
+
+            btn_result.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(),"안녕",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return 6;
+        }
+
+        private class CustomViewHolder extends RecyclerView.ViewHolder{
+
+            TextView textView;
+            Button button;
+            EditText editText;
+            CheckBox checkBox;
+
+
+            public CustomViewHolder(@NonNull View itemView) {
+                super(itemView);
+                textView=findViewById(R.id.item_subName);
+                button=findViewById(R.id.item_scoreBtn);
+                editText=findViewById(R.id.item_scoreEdt);
+                checkBox=findViewById(R.id.item_majorCbx);
             }
         }
     }

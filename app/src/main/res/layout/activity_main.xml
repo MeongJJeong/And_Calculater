@@ -1,181 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
     tools:context=".MainActivity">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_very_light"
-        android:layout_weight="1"
-        android:stretchColumns="*">
+    <include layout="@layout/layout_item_indicater"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-            <TextView
-                android:text="과목명"
-                android:background="@color/gray"
-                android:layout_span="4"
-                android:textAlignment="center"/>
-            <TextView
-                android:text="성적"
-                android:background="@color/gray"
-                android:textAlignment="center"
-                android:layout_width="30dp"/>
-            <TextView
-                android:text="학점"
-                android:background="@color/gray"
-                android:textAlignment="center"
-                android:layout_width="30dp"/>
-            <TextView
-                android:text="전공"
-                android:textAlignment="center"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt1"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn1"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt1"
-                android:layout_width="30dp"/>
-            <CheckBox
-                android:id="@+id/cbx1"
-                android:layout_width="0dp"
-                android:background="@color/gray" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt2"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn2"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt2"
-                android:layout_width="30dp"/>
-            <CheckBox
-                android:id="@+id/cbx2"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt3"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn3"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt3"
-                android:layout_width="30dp"/>
-
-            <CheckBox
-                android:id="@+id/cbx3"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt4"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn4"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt4"
-                android:layout_width="30dp"/>
-
-            <CheckBox
-                android:id="@+id/cbx4"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt5"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn5"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt5"
-                android:layout_width="30dp"/>
-            <CheckBox
-                android:id="@+id/cbx5"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/name_edt6"
-                android:hint="1"
-                android:layout_span="4"/>
-            <Button
-                android:id="@+id/sc_btn6"
-                android:text="A+"
-                android:layout_width="30dp"/>
-            <EditText
-                android:hint="학점"
-                android:id="@+id/score_edt6"
-                android:layout_width="30dp"/>
-            <CheckBox
-                android:id="@+id/cbx6"
-                android:layout_width="2dp"
-                android:background="@color/gray" />
-        </TableRow>
-    </TableLayout>
-
-    <Button
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/main_btn1"
-        android:id="@+id/btn1"
-        android:layout_gravity="center" />
+        android:layout_weight="1"
+        android:id="@+id/recyclerView">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/layout_item_result"
+        android:layout_height="60dp"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>
