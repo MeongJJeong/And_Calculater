@@ -18,7 +18,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <include layout="@layout/layout_item_result"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"/>
 
 </LinearLayout>

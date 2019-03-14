@@ -9,7 +9,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
         android:background="@color/gray_very_light"
         android:layout_weight="1"
         android:padding="5dp"
@@ -32,7 +32,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
         android:background="@color/gray_very_light"
         android:layout_weight="1"
         android:padding="5dp"
