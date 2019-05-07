@@ -26,13 +26,13 @@
         android:id="@+id/F"
         android:title="F"/>
     <item
-        android:visible="false"
         android:id="@+id/Pass"
-        android:title="Pass"/>
+        android:title="Pass"
+        android:visible="false"/>
     <item
-        android:visible="false"
         android:id="@+id/Fail"
-        android:title="Fail"/>
+        android:title="Fail"
+        android:visible="false"/>
 
 
 </menu>
