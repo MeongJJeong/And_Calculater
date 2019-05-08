@@ -1,7 +1,9 @@
 package kr.ac.hanseo.calculater;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,15 +16,20 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.chauthai.overscroll.RecyclerViewBouncy;
 
 import java.util.ArrayList;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
+
     private LayoutInflater inflater;
     public static ArrayList<ScoreModel> scoreModels;
-    public ScoreProcess scoreProcess;
 
     public RecyclerViewAdapter(Context context,ArrayList<ScoreModel> scoreModels){
 
@@ -30,23 +37,44 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         this.scoreModels=scoreModels;
     }
 
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view=inflater.inflate(R.layout.item_score,viewGroup,false);
-        return new CustomViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        if (viewType == VIEW_TYPE_ITEM) {
+            View view = inflater.inflate(R.layout.item_score, viewGroup, false);
+            return new CustomViewHolder(view);
+        } else {
+            View view = inflater.inflate(R.layout.item_loading, viewGroup, false);
+            return new LoadingViewHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
 
-        CustomViewHolder customViewHolder=(CustomViewHolder)viewHolder;
-        customViewHolder.textView.setText((i+1)+"번째 과목");
-
+        if (viewHolder instanceof CustomViewHolder){
+            CustomViewHolder customViewHolder=(CustomViewHolder)viewHolder;
+            customViewHolder.textView.setText((i+1)+"번째 과목");
+        }else if (viewHolder instanceof LoadingViewHolder){
+            //loading
+        }
     }
 
     @Override
     public int getItemCount() {
-//        return itemCount;
-        return scoreModels.size();
+        return scoreModels==null?0:scoreModels.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return scoreModels.get(position)==null?VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
+    }
+
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+            progressBar=(ProgressBar)itemView.findViewById(R.id.progressBar);
+        }
     }
 
     private class CustomViewHolder extends RecyclerView.ViewHolder{

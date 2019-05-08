@@ -6,13 +6,20 @@ import java.util.List;
 public class ScoreProcess {
 
     //field
-    List<ScoreModel> scoreModels;
-    int total;
-    double avg;
+    public ArrayList<ScoreModel> scoreModels;
+    int total_score; //이수학점
+    double avg_score; //평균학점
+    int major_total; //전공 이수학점
+    double major_avg; //전공  평균학점
 
     //constructor
-    public ScoreProcess(){
+    public ScoreProcess(ArrayList<ScoreModel> scoreModels){
+        this.scoreModels=scoreModels;
 
+        total_score =  totalCal();
+        avg_score = avgCal();
+        major_total = maj_totalCal();
+        major_avg = maj_avgCal();
     }
 
     //method
@@ -50,48 +57,48 @@ public class ScoreProcess {
         }
         return 0;
     }
-//
-//    public int totalCal(ScoreProcess s[]){
-//        int result=0;
-//        for(int i=0;i<s.length;i++){
-//            result+=s[i].score;
-//        }
-//        return result;
-//    }
-//    public double avgCal(ScoreProcess s[]){
-//        double result=0;
-//        int n=0;
-//        for(int i=0;i<s.length;i++){
-//            if(s[i].score!=0){
-//                n=n+1;
-//                result=result+s[i].grade;
-//            }
-//        }
-//        if(n==0) return 0;
-//        return result/n;
-//    }
-//    public int cbx_totalCal(ScoreProcess s[]){
-//        int result=0;
-//        for(int i=0;i<s.length;i++){
-//            if(s[i].major==true){
-//                result+=s[i].score;
-//            }
-//        }
-//        return result;
-//    }
-//    public double cbx_avgCal(List<ScoreModel> s){
-//        double result=0;
-//        int n=0;
-//        for (int i=0;i<s.size();i++){
-//            if (s.get(i).major==true){
-//                if(s.get(i).score !=0){
-//                    n=n+1;
-//                    result=result+s.get(i).grade;
-//                }
-//            }
-//        }
-//        if(result==0) return 0;
-//        return result/n;
-//    }
+
+    public int totalCal(){
+        int result=0;
+        for(int i=0;i<scoreModels.size();i++){
+            result+=scoreModels.get(i).score;
+        }
+        return result;
+    }
+    public double avgCal(){
+        double result=0;
+        int n=0;
+        for(int i=0;i<scoreModels.size();i++){
+            if(scoreModels.get(i).score!=0){
+                n=n+1;
+                result=result+gradeCal(scoreModels.get(i).grade);
+            }
+        }
+        if(n==0) return 0;
+        return result/n;
+    }
+    public int maj_totalCal(){
+        int result=0;
+        for(int i=0;i<scoreModels.size();i++){
+            if(scoreModels.get(i).major==true){
+                result+=scoreModels.get(i).score;
+            }
+        }
+        return result;
+    }
+    public double maj_avgCal(){
+        double result=0;
+        int n=0;
+        for (int i=0;i<scoreModels.size();i++){
+            if (scoreModels.get(i).major==true){
+                if(scoreModels.get(i).score !=0){
+                    n=n+1;
+                    result=result+gradeCal(scoreModels.get(i).grade);
+                }
+            }
+        }
+        if(result==0) return 0;
+        return result/n;
+    }
 
 }

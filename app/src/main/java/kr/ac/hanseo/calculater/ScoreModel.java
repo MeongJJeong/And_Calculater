@@ -30,7 +30,6 @@ public class ScoreModel {
     public int getScore() {
         return score;
     }
-
     public void setScore(int score) {
         this.score = score;
     }
@@ -38,7 +37,6 @@ public class ScoreModel {
     public boolean isMajor() {
         return major;
     }
-
     public void setMajor(boolean major) {
         this.major = major;
     }

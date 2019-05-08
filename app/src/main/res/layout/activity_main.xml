@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp"
     android:layout_margin="10dp"
+    android:id="@+id/mainActivity"
     tools:context=".MainActivity">
 
     <include layout="@layout/layout_item_indicater"/>
 
+    <!--<com.chauthai.overscroll.RecyclerViewBouncy-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:id="@+id/recyclerView"-->
+        <!---->
+        <!--app:tension="1000"-->
+        <!--app:friction="200">-->
+
+    <!--</com.chauthai.overscroll.RecyclerViewBouncy>-->
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
