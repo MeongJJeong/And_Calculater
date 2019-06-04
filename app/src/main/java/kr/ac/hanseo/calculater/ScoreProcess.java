@@ -3,73 +3,76 @@ package kr.ac.hanseo.calculater;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Types.NULL;
+
 public class ScoreProcess {
 
     //field
     public ArrayList<ScoreModel> scoreModels;
-    int total_score; //이수학점
-    double avg_score; //평균학점
-    int major_total; //전공 이수학점
-    double major_avg; //전공  평균학점
+    public int total_score; //이수학점
+    public double avg_score; //평균학점
+    public int major_total; //전공 이수학점
+    protected double major_avg; //전공  평균학점
 
     //constructor
     public ScoreProcess(ArrayList<ScoreModel> scoreModels){
         this.scoreModels=scoreModels;
 
-        total_score =  totalCal();
-        avg_score = avgCal();
-        major_total = maj_totalCal();
-        major_avg = maj_avgCal();
+        total_score =  totalCal(scoreModels);
+        avg_score = avgCal(scoreModels);
+        major_total = maj_totalCal(scoreModels);
+        major_avg = maj_avgCal(scoreModels);
     }
 
     //method
     public double gradeCal(String grade){
 
-        if(grade=="A+"){
+        if(grade.equals("A+")){
             return 4.5;
         }
-        if(grade=="A"){
+        if(grade.equals("A")){
             return 4;
         }
-        if(grade=="B+"){
+        if(grade.equals("B+")){
             return 3.5;
         }
-        if(grade=="B"){
+        if(grade.equals("B")){
             return 3;
         }
-        if(grade=="C+"){
+        if(grade.equals("C+")){
             return 2.5;
         }
-        if(grade=="C"){
+        if(grade.equals("C")){
             return 2;
         }
-        if(grade=="D"){
+        if(grade.equals("D")){
             return 1.5;
         }
-        if(grade=="F"){
+        if(grade.equals("F")){
             return 0;
         }
-        if(grade=="PASS"){
+        if(grade.equals("PASS")){
             return 4.5;
         }
-        if(grade=="FAIL"){
+        if(grade.equals("FAIL")){
             return 4.5;
         }
         return 0;
     }
 
-    public int totalCal(){
+    private int totalCal(ArrayList<ScoreModel> scoreModels){
         int result=0;
         for(int i=0;i<scoreModels.size();i++){
             result+=scoreModels.get(i).score;
         }
         return result;
     }
-    public double avgCal(){
+
+    private double avgCal(ArrayList<ScoreModel> scoreModels){
         double result=0;
         int n=0;
         for(int i=0;i<scoreModels.size();i++){
-            if(scoreModels.get(i).score!=0){
+            if(scoreModels.get(i).score!=0||scoreModels.get(i).score!=NULL){
                 n=n+1;
                 result=result+gradeCal(scoreModels.get(i).grade);
             }
@@ -77,20 +80,22 @@ public class ScoreProcess {
         if(n==0) return 0;
         return result/n;
     }
-    public int maj_totalCal(){
+
+    private int maj_totalCal(ArrayList<ScoreModel> scoreModels){
         int result=0;
         for(int i=0;i<scoreModels.size();i++){
-            if(scoreModels.get(i).major==true){
+            if(scoreModels.get(i).major){
                 result+=scoreModels.get(i).score;
             }
         }
         return result;
     }
-    public double maj_avgCal(){
+
+    private double maj_avgCal(ArrayList<ScoreModel> scoreModels){
         double result=0;
         int n=0;
         for (int i=0;i<scoreModels.size();i++){
-            if (scoreModels.get(i).major==true){
+            if (scoreModels.get(i).major){
                 if(scoreModels.get(i).score !=0){
                     n=n+1;
                     result=result+gradeCal(scoreModels.get(i).grade);

@@ -8,25 +8,25 @@
 
     <TextView
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:gravity="center"
         android:layout_weight="1"
-        android:text="과목명" />
+        android:text="@string/indi_subName" />
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="70dp"
         android:gravity="center"
-        android:text="성적"/>
+        android:text="@string/indi_grade"/>
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="50dp"
         android:gravity="center"
-        android:text="학점" />
+        android:text="@string/indi_score" />
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="50dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
         android:gravity="center"
-        android:text="전공" />
+        android:text="@string/indi_major" />
 
-</LinearLayout>
+    </LinearLayout>

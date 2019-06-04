@@ -1,9 +1,12 @@
 package kr.ac.hanseo.calculater;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,14 +25,15 @@ import android.widget.TextView;
 import com.chauthai.overscroll.RecyclerViewBouncy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
-
     private LayoutInflater inflater;
-    public static ArrayList<ScoreModel> scoreModels;
+    public ArrayList<ScoreModel> scoreModels;
+
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_PLUS_BTN = 1;
 
     public RecyclerViewAdapter(Context context,ArrayList<ScoreModel> scoreModels){
 
@@ -38,68 +42,36 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+
+
         if (viewType == VIEW_TYPE_ITEM) {
             View view = inflater.inflate(R.layout.item_score, viewGroup, false);
-            return new CustomViewHolder(view);
+            return new ScoreitemViewHolder(view);
         } else {
-            View view = inflater.inflate(R.layout.item_loading, viewGroup, false);
-            return new LoadingViewHolder(view);
+            View view = inflater.inflate(R.layout.item_plus, viewGroup, false);
+            return new PlusBtnViewHolder(view);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
 
-        if (viewHolder instanceof CustomViewHolder){
-            CustomViewHolder customViewHolder=(CustomViewHolder)viewHolder;
-            customViewHolder.textView.setText((i+1)+"번째 과목");
-        }else if (viewHolder instanceof LoadingViewHolder){
-            //loading
-        }
-    }
+        if (viewHolder instanceof ScoreitemViewHolder) {
 
-    @Override
-    public int getItemCount() {
-        return scoreModels==null?0:scoreModels.size();
-    }
+            final  ScoreitemViewHolder scoreitemViewHolder=(ScoreitemViewHolder)viewHolder;
+            scoreitemViewHolder.textView.setText((i+1)+"번째 과목");
 
-    @Override
-    public int getItemViewType(int position) {
-        return scoreModels.get(position)==null?VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
-    }
-
-    private class LoadingViewHolder extends RecyclerView.ViewHolder {
-        ProgressBar progressBar;
-
-        public LoadingViewHolder(@NonNull View itemView) {
-            super(itemView);
-            progressBar=(ProgressBar)itemView.findViewById(R.id.progressBar);
-        }
-    }
-
-    private class CustomViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
-        Button button;
-        EditText editText;
-        CheckBox checkBox;
-
-        public CustomViewHolder(@NonNull final View itemView) {
-            super(itemView);
-            textView=(TextView)itemView.findViewById(R.id.item_subName);
-            button=(Button)itemView.findViewById(R.id.item_scoreBtn);
-            editText=(EditText)itemView.findViewById(R.id.item_scoreEdt);
-            checkBox=(CheckBox)itemView.findViewById(R.id.item_majorCbx);
-
-            button.setOnClickListener(new View.OnClickListener() {
+            scoreitemViewHolder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final PopupMenu popupMenu=new PopupMenu(button.getContext(),view);
+                    final int k= scoreitemViewHolder.getAdapterPosition();
+                    final PopupMenu popupMenu=new PopupMenu(scoreitemViewHolder.button.getContext(),view);
                     popupMenu.getMenuInflater().inflate(R.menu.score_menu,popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            button.setText(menuItem.getTitle().toString());
-                            scoreModels.get(getAdapterPosition()).setGrade(button.getText().toString());
+                            scoreitemViewHolder.button.setText(menuItem.getTitle().toString());
+                            scoreModels.get(i).setGrade(scoreitemViewHolder.button.getText().toString());
                             return false;
                         }
                     });
@@ -107,7 +79,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 }
             });
 
-            textView.addTextChangedListener(new TextWatcher() {
+            scoreitemViewHolder.textView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -124,7 +96,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 }
             });
 
-            editText.addTextChangedListener(new TextWatcher() {
+            scoreitemViewHolder.editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -132,11 +104,11 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (editText.length()==0){
+                    if (scoreitemViewHolder.editText.length()==0){
                         return;
                     }else {
-                        int value=Integer.parseInt(editText.getText().toString());
-                        scoreModels.get(getAdapterPosition()).setScore(value );
+                        int value = Integer.parseInt(scoreitemViewHolder.editText.getText().toString());
+                        scoreModels.get(i).setScore(value);
                     }
                 }
 
@@ -146,19 +118,70 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 }
             });
 
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            scoreitemViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (checkBox.isChecked()){
+                    if (scoreitemViewHolder.checkBox.isChecked()){
                         // is major subject
-                        scoreModels.get(getAdapterPosition()).setMajor(true);
+                        scoreModels.get(i).setMajor(true);
                     }else {
                         // is not major subject
-                        scoreModels.get(getAdapterPosition()).setMajor(true);
+                        scoreModels.get(i).setMajor(false);
                     }
                 }
             });
+        } else if (viewHolder instanceof PlusBtnViewHolder) {
+            PlusBtnViewHolder plusBtnViewHolder = (PlusBtnViewHolder)viewHolder;
+            plusBtnViewHolder.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    scoreModels.set(i,new ScoreModel("A+",0,false));
+                    scoreModels.get(i).model=false;
+                    scoreModels.add(new ScoreModel(true));
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
 
+    @Override
+    public int getItemCount() {
+        return scoreModels.size();
+        //return scoreModels == null?0:scoreModels.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return scoreModels.get(position).model?VIEW_TYPE_PLUS_BTN:VIEW_TYPE_ITEM;
+    }
+
+    public void deleteItem(int position) {
+        scoreModels.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
+    private class ScoreitemViewHolder extends RecyclerView.ViewHolder{
+        protected TextView textView;
+        protected Button button;
+        protected EditText editText;
+        protected CheckBox checkBox;
+
+        public ScoreitemViewHolder(@NonNull final View itemView) {
+            super(itemView);
+            textView=(TextView)itemView.findViewById(R.id.item_subName);
+            button=(Button)itemView.findViewById(R.id.item_scoreBtn);
+            editText=(EditText)itemView.findViewById(R.id.item_scoreEdt);
+            checkBox=(CheckBox)itemView.findViewById(R.id.item_majorCbx);
+        }
+    }
+
+    private class PlusBtnViewHolder extends RecyclerView.ViewHolder{
+        protected Button button;
+
+        public PlusBtnViewHolder(@NonNull View itemView) {
+            super(itemView);
+            button=(Button)itemView.findViewById(R.id.item_plusBtn);
         }
     }
 }

@@ -7,56 +7,56 @@
     >
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="5dp"
         android:background="@color/gray_very_light"
         android:layout_weight="1"
-        android:padding="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="평균학점 :"
             android:id="@+id/avg"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="이수학점 :"
             android:id="@+id/total"
             android:layout_weight="1"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_very_light"
         android:layout_weight="1"
-        android:padding="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="전공평점 :"
-            android:id="@+id/cbx_avg"
+            android:id="@+id/major_avg"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="전공학점 :"
-            android:id="@+id/cbx_total"
+            android:id="@+id/major_total"
             android:layout_weight="1"/>
     </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="결과"
-        android:layout_marginLeft="5dp"
+        android:text="@string/main_btn_result"
+        android:textSize="18sp"
+        android:layout_marginStart="5dp"
         android:textColor="#ffffff"
         android:id="@+id/btn_result"
         android:background="@color/google_green"

@@ -1,8 +1,14 @@
 <resources>
-    <string name="app_name">Calculater</string>
+    <string name="app_name">학점 계산기</string>
     <string name="main_name">꺄하하하하</string>
     <string name="main_btn1">result</string>
 
+    <string name="indi_subName">과목명</string>
+    <string name="indi_grade">성적</string>
+    <string name="indi_score">학점</string>
+    <string name="indi_major">전공</string>
+
+    <string name="main_btn_result">결과</string>
 
     <string name="result_size">16dp</string>
 </resources>
