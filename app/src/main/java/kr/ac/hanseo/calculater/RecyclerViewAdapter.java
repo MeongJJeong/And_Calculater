@@ -1,12 +1,7 @@
 package kr.ac.hanseo.calculater;
 
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,13 +14,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.chauthai.overscroll.RecyclerViewBouncy;
-
 import java.util.ArrayList;
-import java.util.List;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -33,7 +24,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public ArrayList<ScoreModel> scoreModels;
 
     private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_PLUS_BTN = 1;
+    private final int VIEW_TYPE_LOADING = 1;
 
     public RecyclerViewAdapter(Context context,ArrayList<ScoreModel> scoreModels){
 
@@ -48,8 +39,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             View view = inflater.inflate(R.layout.item_score, viewGroup, false);
             return new ScoreitemViewHolder(view);
         } else {
-            View view = inflater.inflate(R.layout.item_plus, viewGroup, false);
-            return new PlusBtnViewHolder(view);
+            View view = inflater.inflate(R.layout.item_loading, viewGroup, false);
+            return new LoadingViewHolder(view);
         }
     }
 
@@ -130,29 +121,26 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     }
                 }
             });
-        } else if (viewHolder instanceof PlusBtnViewHolder) {
-            PlusBtnViewHolder plusBtnViewHolder = (PlusBtnViewHolder)viewHolder;
-            plusBtnViewHolder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    scoreModels.set(i,new ScoreModel("A+",0,false));
-                    scoreModels.get(i).model=false;
-                    scoreModels.add(new ScoreModel(true));
-                    notifyDataSetChanged();
-                }
-            });
+        } else if (viewHolder instanceof LoadingViewHolder) {
+            LoadingViewHolder loadingViewHolder = (LoadingViewHolder)viewHolder;
+//          //  loadingViewHolder.button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    scoreModels.set(i,new ScoreModel("A+",0,false));
+//                    notifyDataSetChanged();
+//                }
+//            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return scoreModels.size();
-        //return scoreModels == null?0:scoreModels.size();
+        return scoreModels == null?0:scoreModels.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return scoreModels.get(position).model?VIEW_TYPE_PLUS_BTN:VIEW_TYPE_ITEM;
+        return scoreModels.get(position)==null?VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
     }
 
     public void deleteItem(int position) {
@@ -176,10 +164,10 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
     }
 
-    private class PlusBtnViewHolder extends RecyclerView.ViewHolder{
+    private class LoadingViewHolder extends RecyclerView.ViewHolder{
         protected Button button;
 
-        public PlusBtnViewHolder(@NonNull View itemView) {
+        public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
             button=(Button)itemView.findViewById(R.id.item_plusBtn);
         }

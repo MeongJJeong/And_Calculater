@@ -1,5 +1,7 @@
 package kr.ac.hanseo.calculater;
 
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter adapter;
     public ArrayList<ScoreModel> scoreModels;
 
-    private Button btn_result,model;
+    boolean isLoading = false;
+    private Button btn_result;
     private TextView avg, total, major_avg, major_total;
 
     int itemCount=6;
@@ -29,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        model=(Button)findViewById(R.id.item_plusBtn);
 
         avg=(TextView)findViewById(R.id.avg);
         total=(TextView)findViewById(R.id.total);
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         adapter=new RecyclerViewAdapter(getApplicationContext(),scoreModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        initScrollListener();
 
         ItemTouchHelper itemTouchHelper=new ItemTouchHelper(new SwipeController(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -69,8 +72,52 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < itemCount; i++){
             list.add(new ScoreModel("A+",0,false));
         }
-        list.add(new ScoreModel(true));
 
         return list;
+    }
+
+    private void initScrollListener(){
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+                if(!isLoading){
+                    if (linearLayoutManager!= null && linearLayoutManager.findLastCompletelyVisibleItemPosition()==scoreModels.size()-1){
+
+                        loadMore();
+                        isLoading=true;
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore(){
+        scoreModels.add(null);
+        adapter.notifyItemInserted(scoreModels.size()-1);
+
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scoreModels.remove(scoreModels.size()-1);
+                int scrollPosition=scoreModels.size();
+                adapter.notifyItemRemoved(scrollPosition);
+                scoreModels.add(new ScoreModel("A+",0,false));
+
+                adapter.notifyDataSetChanged();
+                isLoading=false;
+
+            }
+        },800);
+
     }
 }

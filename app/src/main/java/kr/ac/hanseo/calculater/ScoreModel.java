@@ -6,16 +6,11 @@ public class ScoreModel {
     public String grade;
     public int score;
     public boolean major;
-    public boolean model=false;
 
     public ScoreModel(String grade,int score,boolean major){
         this.grade=grade;
         this.score=score;
         this.major=major;
-    }
-
-    public ScoreModel(boolean model){
-        this.model = model;
     }
 
     public String getSubName(){
